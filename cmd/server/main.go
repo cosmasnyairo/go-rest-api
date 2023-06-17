@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/cosmasnyairo/go-rest-api/internal/db"
@@ -18,7 +17,7 @@ func Run() error {
 	if err != nil {
 		return err
 	}
-	if err := db.Ping(context.Background()); err != nil {
+	if err := db.MigrateDB(); err != nil {
 		return err
 	}
 	fmt.Println(SuccessfullyConnectedToDB)
