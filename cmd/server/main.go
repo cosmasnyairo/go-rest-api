@@ -1,8 +1,10 @@
 package main
 
 import (
+	"context"
 	"fmt"
 
+	"github.com/cosmasnyairo/go-rest-api/internal/comment"
 	"github.com/cosmasnyairo/go-rest-api/internal/db"
 )
 
@@ -20,7 +22,15 @@ func Run() error {
 	if err := db.MigrateDB(); err != nil {
 		return err
 	}
+
 	fmt.Println(SuccessfullyConnectedToDB)
+
+	cmtService := comment.NewService(db)
+	fmt.Println(cmtService.Store.GetComment(
+		context.Background(),
+		"66fabd61cd40da",
+	))
+
 	return nil
 }
 func main() {
