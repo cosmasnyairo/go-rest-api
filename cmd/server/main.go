@@ -26,9 +26,9 @@ func Run() error {
 	fmt.Println(SuccessfullyConnectedToDB)
 
 	cmtService := comment.NewService(db)
-	fmt.Println(cmtService.Store.GetComment(
+	fmt.Println(cmtService.GetComment(
 		context.Background(),
-		"66fabd61cd40da",
+		"1cd40daa-60da-66fa-61cd-66fabd61cd40",
 	))
 
 	return nil

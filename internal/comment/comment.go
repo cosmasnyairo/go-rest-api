@@ -41,8 +41,8 @@ func (s *Service) CreateComment(ctx context.Context, cmt Comment) (Comment, erro
 }
 
 func (s *Service) GetComment(ctx context.Context, id string) (Comment, error) {
-	fmt.Println("Retrieving a commnet")
-	comment, err := s.Store.GetComment(ctx, "Here")
+	fmt.Println("Retrieving a comment")
+	comment, err := s.Store.GetComment(ctx, id)
 	if err != nil {
 		fmt.Println(err)
 		return Comment{}, ErrorFetchingComment
