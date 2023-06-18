@@ -14,7 +14,7 @@ var (
 
 // Responsible for instantiation and startup of our go application
 func Run() error {
-	fmt.Println("Starting  application")
+	fmt.Println("Starting application")
 	db, err := db.NewDatabase()
 	if err != nil {
 		return err
@@ -26,10 +26,28 @@ func Run() error {
 	fmt.Println(SuccessfullyConnectedToDB)
 
 	cmtService := comment.NewService(db)
-	fmt.Println(cmtService.GetComment(
-		context.Background(),
-		"1cd40daa-60da-66fa-61cd-66fabd61cd40",
-	))
+
+	newcomment := comment.Comment{
+		ID:     "1cd40daa-60da-66fa-61cd-66fabd61cd40",
+		Slug:   "manual-test",
+		Body:   "Cosmas",
+		Author: "Hola! Soy Dora!",
+	}
+
+	updatedcomment := comment.Comment{
+		Slug:   "not-a-manual-test",
+		Body:   "Cosmas",
+		Author: "Hola! Soy Dora!",
+	}
+
+	createdcomment, _ := cmtService.CreateComment(context.Background(), newcomment)
+	fmt.Println(cmtService.GetComment(context.Background(), createdcomment.ID))
+
+	cmtService.UpdateComment(context.Background(), createdcomment.ID, updatedcomment)
+	fmt.Println(cmtService.GetComment(context.Background(), createdcomment.ID))
+
+	cmtService.DeleteComment(context.Background(), createdcomment.ID)
+	fmt.Println(cmtService.GetComment(context.Background(), createdcomment.ID))
 
 	return nil
 }

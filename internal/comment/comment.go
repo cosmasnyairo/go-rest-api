@@ -7,6 +7,9 @@ import (
 )
 
 var (
+	ErrorCreatingComment = errors.New("failed to create comment")
+	ErrorDeletingComment = "failed to delete comment"
+	ErrorUpdatingComment = "failed to update comment"
 	ErrorFetchingComment = errors.New("failed to fetch comment by id")
 	ErrorNotImplemented  = errors.New("not implemented")
 	EmptyComment         = Comment{}
@@ -15,6 +18,9 @@ var (
 // Defines all the methods our service needs to operate
 type Store interface {
 	GetComment(context.Context, string) (Comment, error)
+	CreateComment(context.Context, Comment) (Comment, error)
+	DeleteComment(ctx context.Context, id string) error
+	UpdateComment(ctx context.Context, id string, cmt Comment) (Comment, error)
 }
 
 // Comment Body required by our service
@@ -38,11 +44,16 @@ func NewService(store Store) *Service {
 }
 
 func (s *Service) CreateComment(ctx context.Context, cmt Comment) (Comment, error) {
-	return EmptyComment, ErrorNotImplemented
+	fmt.Println("Creating comment")
+	comment, err := s.Store.CreateComment(ctx, cmt)
+	if err != nil {
+		return EmptyComment, fmt.Errorf("%s: %w", ErrorCreatingComment, err)
+	}
+	return comment, ErrorNotImplemented
 }
 
 func (s *Service) GetComment(ctx context.Context, id string) (Comment, error) {
-	fmt.Println("Retrieving a comment")
+	fmt.Println("Retrieving comment")
 	comment, err := s.Store.GetComment(ctx, id)
 	if err != nil {
 		return EmptyComment, fmt.Errorf("%s: %w", ErrorFetchingComment, err)
@@ -51,10 +62,16 @@ func (s *Service) GetComment(ctx context.Context, id string) (Comment, error) {
 	return comment, nil
 }
 
-func (s *Service) UpdateComment(ctx context.Context, cmt Comment) error {
-	return ErrorNotImplemented
+func (s *Service) UpdateComment(ctx context.Context, id string, cmt Comment) (Comment, error) {
+	fmt.Println("Updating comment")
+	updatedcomment, err := s.Store.UpdateComment(ctx, id, cmt)
+	if err != nil {
+		return EmptyComment, fmt.Errorf("%s: %w", ErrorUpdatingComment, err)
+	}
+	return updatedcomment, err
 }
 
 func (s *Service) DeleteComment(ctx context.Context, id string) error {
-	return ErrorNotImplemented
+	fmt.Println("Deleting comment")
+	return s.Store.DeleteComment(ctx, id)
 }
