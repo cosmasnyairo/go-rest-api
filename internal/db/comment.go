@@ -40,8 +40,12 @@ func (d *Database) GetComment(ctx context.Context, uuid string) (comment.Comment
 		uuid,
 	)
 	if err := row.Scan(&cmtRow.ID, &cmtRow.Slug, &cmtRow.Body, &cmtRow.Author); err != nil {
-		return comment.Comment{}, fmt.Errorf("%s: %w", ErrorFetchingComment, err)
+		return comment.EmptyComment, fmt.Errorf("%s: %w", ErrorFetchingComment, err)
 	}
 
 	return convertCommentRowtToComment(cmtRow), nil
+}
+
+func (d *Database) CreateComment(ctx context.Context, uuid string) (comment.Comment, error) {
+	return comment.EmptyComment, nil
 }

@@ -9,6 +9,7 @@ import (
 var (
 	ErrorFetchingComment = errors.New("failed to fetch comment by id")
 	ErrorNotImplemented  = errors.New("not implemented")
+	EmptyComment         = Comment{}
 )
 
 // Defines all the methods our service needs to operate
@@ -16,7 +17,7 @@ type Store interface {
 	GetComment(context.Context, string) (Comment, error)
 }
 
-// Comment Body
+// Comment Body required by our service
 type Comment struct {
 	ID     string
 	Slug   string
@@ -37,15 +38,14 @@ func NewService(store Store) *Service {
 }
 
 func (s *Service) CreateComment(ctx context.Context, cmt Comment) (Comment, error) {
-	return Comment{}, ErrorNotImplemented
+	return EmptyComment, ErrorNotImplemented
 }
 
 func (s *Service) GetComment(ctx context.Context, id string) (Comment, error) {
 	fmt.Println("Retrieving a comment")
 	comment, err := s.Store.GetComment(ctx, id)
 	if err != nil {
-		fmt.Println(err)
-		return Comment{}, ErrorFetchingComment
+		return EmptyComment, fmt.Errorf("%s: %w", ErrorFetchingComment, err)
 	}
 
 	return comment, nil

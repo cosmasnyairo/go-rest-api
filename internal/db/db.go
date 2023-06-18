@@ -11,6 +11,7 @@ import (
 
 var (
 	ErrorConnectingToDB = "failed to connect to database"
+	EmptyDatabase       = Database{}
 )
 
 type Database struct {
@@ -25,8 +26,7 @@ func NewDatabase() (*Database, error) {
 	)
 	dbConn, err := sqlx.Connect("postgres", connectionString)
 	if err != nil {
-		fmt.Println(err)
-		return &Database{}, fmt.Errorf("%v : %w", ErrorConnectingToDB, err)
+		return &EmptyDatabase, fmt.Errorf("%v : %w", ErrorConnectingToDB, err)
 	}
 
 	return &Database{

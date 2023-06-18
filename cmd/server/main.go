@@ -9,12 +9,12 @@ import (
 )
 
 var (
-	SuccessfullyConnectedToDB = "successfully to connect to database"
+	SuccessfullyConnectedToDB = "successfully connected to database"
 )
 
 // Responsible for instantiation and startup of our go application
 func Run() error {
-	fmt.Println("Starting our application")
+	fmt.Println("Starting  application")
 	db, err := db.NewDatabase()
 	if err != nil {
 		return err

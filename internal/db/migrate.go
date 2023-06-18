@@ -11,6 +11,7 @@ import (
 )
 
 var (
+	ErrorCreatingDatabase   = "could not create a database instance"
 	ErrorCreatingDriver     = "could not create postgres driver"
 	ErrorCreatingMigrations = "could not create migrations"
 	SuccessfullyMigratedDB  = "successfully migrated the database"
@@ -30,8 +31,7 @@ func (d *Database) MigrateDB() error {
 		driver,
 	)
 	if err != nil {
-		fmt.Println(err)
-		return err
+		return fmt.Errorf("%s: %w", ErrorCreatingDatabase, err)
 	}
 	if err := m.Up(); err != nil {
 		if !errors.Is(err, migrate.ErrNoChange) {
