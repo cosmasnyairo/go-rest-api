@@ -10,8 +10,9 @@ import (
 )
 
 var (
-	ErrorConnectingToDB = "failed to connect to database"
-	EmptyDatabase       = Database{}
+	ErrorConnectingToDB       = "failed to connect to database"
+	EmptyDatabase             = Database{}
+	SuccessfullyConnectedToDB = "successfully connected to database"
 )
 
 type Database struct {
@@ -28,6 +29,7 @@ func NewDatabase() (*Database, error) {
 	if err != nil {
 		return &EmptyDatabase, fmt.Errorf("%v : %w", ErrorConnectingToDB, err)
 	}
+	fmt.Println(SuccessfullyConnectedToDB)
 
 	return &Database{
 		Client: dbConn,
